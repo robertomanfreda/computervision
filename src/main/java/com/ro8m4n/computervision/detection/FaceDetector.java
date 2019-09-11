@@ -39,14 +39,20 @@ public class FaceDetector extends Detector {
         );
     }
 
+    @Override
+    void release() {
+        super.release();
+        release(faces);
+    }
+
     public void frontalFaceDetection() {
         detectFrontalFaces(classifier.getHaarCascadeFrontalFace(), exampleImage);
         LOGGER.info("Detected faces: {}", faces.toArray().length);
+        release();
 
         detectFrontalFaces(classifier.getLbpCascadeFrontalFace(), exampleImage);
         LOGGER.info("Detected faces: {}", faces.toArray().length);
-
-        release(faces);
+        release();
     }
 
     private void detectFrontalFaces(CascadeClassifier cascadeClassifier, File file) {
@@ -56,15 +62,13 @@ public class FaceDetector extends Detector {
         matRgba = Highgui.imread(file.getPath());
         matRgba.copyTo(matGrey);
 
-        matGrey = resizeWithScaleFactor(null);
+        resizeWithScaleFactor(matGrey, matResized, null);
 
         Imgproc.cvtColor(matRgba, matResized, Imgproc.COLOR_RGB2GRAY);
         Imgproc.equalizeHist(matResized, matResized);
 
         cascadeClassifier.detectMultiScale(matResized, faces, 1.1, 6,
                 0 | Objdetect.CASCADE_SCALE_IMAGE, new Size(30, 30), new Size(0, 0));
-
-        release();
 
         long elapsedTime = System.currentTimeMillis() - startTime;
         LOGGER.debug("Elaboration took: {} {} -> {} {}", elapsedTime, "millis", ((float) elapsedTime / 1000f), " seconds");

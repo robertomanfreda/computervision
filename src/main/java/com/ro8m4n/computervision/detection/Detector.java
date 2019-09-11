@@ -19,13 +19,16 @@ public abstract class Detector {
      */
     private static final float RESIZING_SCALE_FACTOR = 3.0f;
 
-    Mat resizeWithScaleFactor(@Nullable Float scaleFactor) {
+    /**
+     * Reduce the size of the {@code #src} putting the result into {@code dst} using {@code scaleFactor}
+     *
+     * @param src         the source {@link Mat}
+     * @param dst         the destination {@link Mat}
+     * @param scaleFactor the scaling value
+     */
+    public void resizeWithScaleFactor(Mat src, Mat dst, @Nullable Float scaleFactor) {
         float scale = null != scaleFactor ? scaleFactor : RESIZING_SCALE_FACTOR;
-
-        Imgproc.resize(matGrey, matResized, new Size((matGrey.width() / scale), (matGrey.height() / scale)),
-                0, 0, Imgproc.INTER_CUBIC);
-
-        return matGrey;
+        Imgproc.resize(src, dst, new Size((src.width() / scale), (src.height() / scale)), 0, 0, Imgproc.INTER_CUBIC);
     }
 
     void release() {
