@@ -20,7 +20,7 @@ public abstract class Detector {
     private static final float RESIZING_SCALE_FACTOR = 3.0f;
 
     /**
-     * Reduce the size of the {@code #src} putting the result into {@code dst} using {@code scaleFactor}
+     * Reduce the size of the {@code src} putting the result into {@code dst} using {@code scaleFactor}
      *
      * @param src         the source {@link Mat}
      * @param dst         the destination {@link Mat}
