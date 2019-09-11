@@ -31,12 +31,20 @@ public abstract class Detector {
         Imgproc.resize(src, dst, new Size((src.width() / scale), (src.height() / scale)), 0, 0, Imgproc.INTER_CUBIC);
     }
 
+    /**
+     * Deallocate memory for {@link #matRgba}, {@link #matGrey}, {@link #matResized}
+     */
     void release() {
         matRgba.release();
         matGrey.release();
         matResized.release();
     }
 
+    /**
+     * Deallocate memory for the {@code mat}
+     *
+     * @param mat the {@link Mat} for which to free memory
+     */
     void release(Mat mat) {
         mat.release();
     }

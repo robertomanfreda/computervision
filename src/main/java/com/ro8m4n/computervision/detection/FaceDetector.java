@@ -1,6 +1,7 @@
 package com.ro8m4n.computervision.detection;
 
 import com.ro8m4n.computervision.classification.Classifier;
+import com.ro8m4n.computervision.model.FaceResult;
 import org.opencv.core.MatOfRect;
 import org.opencv.core.Size;
 import org.opencv.highgui.Highgui;
@@ -13,7 +14,6 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.util.Objects;
 
-
 public class FaceDetector extends Detector {
     private static final String TAG = Classifier.class.getName();
     private static final Logger LOGGER = LoggerFactory.getLogger(Classifier.class);
@@ -24,35 +24,38 @@ public class FaceDetector extends Detector {
     private Classifier classifier = new Classifier();
 
     /**
-     * A {@link MatOfRect} where we store the result of {@link #frontalFaceDetection()}
+     * A {@link MatOfRect} where we store the result of {@link #frontalFaceDetection(String)}
      */
-    private MatOfRect faces;
+    private MatOfRect faces = new MatOfRect();
 
+    /**
+     * A test-purposes {@link File} where load different images
+     */
     private File exampleImage;
 
-    public FaceDetector() {
-        faces = new MatOfRect();
-
-        // Initializing example image
-        exampleImage = new File(Objects.requireNonNull(
-                getClass().getClassLoader().getResource("examples/images/faces.jpg")).getFile()
-        );
-    }
-
+    /**
+     * {@link Detector#release()} the super {@link org.opencv.core.Mat}s plus 'this' Mat(s)
+     */
     @Override
     void release() {
         super.release();
         release(faces);
     }
 
-    public void frontalFaceDetection() {
+    public FaceResult frontalFaceDetection(String filename) {
+        FaceResult faceResult = new FaceResult();
+
+        exampleImage = loadExampleImage(filename);
         detectFrontalFaces(classifier.getHaarCascadeFrontalFace(), exampleImage);
-        LOGGER.info("Detected faces: {}", faces.toArray().length);
+        faceResult.setDetectedFacesUsingHAAR(faces.toArray().length);
         release();
 
         detectFrontalFaces(classifier.getLbpCascadeFrontalFace(), exampleImage);
-        LOGGER.info("Detected faces: {}", faces.toArray().length);
+        faceResult.setDetectedFacesUsingLBP(faces.toArray().length);
         release();
+
+        LOGGER.info(faceResult.toString());
+        return faceResult;
     }
 
     private void detectFrontalFaces(CascadeClassifier cascadeClassifier, File file) {
@@ -73,4 +76,9 @@ public class FaceDetector extends Detector {
         long elapsedTime = System.currentTimeMillis() - startTime;
         LOGGER.debug("Elaboration took: {} {} -> {} {}", elapsedTime, "millis", ((float) elapsedTime / 1000f), " seconds");
     }
+
+    private File loadExampleImage(String filename) {
+        return new File(Objects.requireNonNull(getClass().getClassLoader().getResource(filename)).getFile());
+    }
+
 }
