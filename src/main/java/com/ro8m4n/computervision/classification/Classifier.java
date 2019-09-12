@@ -28,11 +28,11 @@ public class Classifier {
     }
 
     public Classifier() {
-        haarCascadeFrontalFace = getCascadeClassifier("cascades/haar/frontalface_default.xml");
-        lbpCascadeFrontalFace = getCascadeClassifier("cascades/lbp/frontalface_improved.xml");
+        haarCascadeFrontalFace = initCascadeClassifier("cascades/haar/frontalface_default.xml");
+        lbpCascadeFrontalFace = initCascadeClassifier("cascades/lbp/frontalface_improved.xml");
     }
 
-    private CascadeClassifier getCascadeClassifier(String fileName) {
+    private CascadeClassifier initCascadeClassifier(String fileName) {
         // Initializing cascade classifier
         ClassLoader classLoader = getClass().getClassLoader();
 

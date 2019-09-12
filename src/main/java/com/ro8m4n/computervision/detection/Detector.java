@@ -1,9 +1,9 @@
 package com.ro8m4n.computervision.detection;
 
-import org.jetbrains.annotations.Nullable;
 import org.opencv.core.Mat;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
+import org.springframework.lang.Nullable;
 
 public abstract class Detector {
 
