@@ -80,7 +80,7 @@ class FaceDetectorTest {
         // Scan results
         for (FaceResult result : results) {
             int f = result.getDetectedFaces();
-            // If the processing found a number of faces between 17 and 21 we are good
+            // If the processing found 1 we are good
             if (f == targetFaces) {
                 facesFound = result.getDetectedFaces();
                 // Doesn't matter if the result belongs to an HAAR or LBP classifier
@@ -108,7 +108,7 @@ class FaceDetectorTest {
         // Scan results
         for (FaceResult result : results) {
             int f = result.getDetectedFaces();
-            // If the processing found a number of faces between 17 and 21 we are good
+            // If the processing found 1 we are good
             if (f == targetFaces) {
                 facesFound = result.getDetectedFaces();
                 // Doesn't matter if the result belongs to an HAAR or LBP classifier
