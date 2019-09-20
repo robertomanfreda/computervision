@@ -7,9 +7,9 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.util.Objects;
 
-public class Classifier {
-    private static final String TAG = Classifier.class.getName();
-    private final Logger LOGGER = LoggerFactory.getLogger(Classifier.class);
+public class ClassifierCollector {
+    private static final String TAG = ClassifierCollector.class.getName();
+    private final Logger LOGGER = LoggerFactory.getLogger(ClassifierCollector.class);
 
     /**
      * An instance of {@link CascadeClassifier} to detect objects, initialize using an xml HAAR_FRONTAL_FACE classifier
@@ -23,11 +23,11 @@ public class Classifier {
     /**
      * An enum that contains all the type of supported {@link CascadeClassifier}
      */
-    private enum CascadeType {
+    public enum CascadeType {
         HAAR_FRONTAL_FACE, LBP_FRONTAL_FACE
     }
 
-    public Classifier() {
+    public ClassifierCollector() {
         haarCascadeFrontalFace = initCascadeClassifier("cascades/haar/frontalface_default.xml");
         lbpCascadeFrontalFace = initCascadeClassifier("cascades/lbp/frontalface_improved.xml");
     }
@@ -50,6 +50,12 @@ public class Classifier {
         LOGGER.warn("That Cascade is not an instance of: {}", TAG);
 
         return "I don't know";
+    }
+
+    public CascadeType getCascadeType(CascadeClassifier cascadeClassifier) {
+        if (cascadeClassifier.equals(haarCascadeFrontalFace)) return CascadeType.HAAR_FRONTAL_FACE;
+        if (cascadeClassifier.equals(lbpCascadeFrontalFace)) return CascadeType.LBP_FRONTAL_FACE;
+        return null;
     }
 
     public CascadeClassifier getHaarCascadeFrontalFace() {
